@@ -31,7 +31,7 @@ public class ContaPoupanca extends Conta {
     @Override
     public Double saque(Double valor) throws SaldoInsuficienteException, ValorNegativoException {
         verificaValorNegativo(valor);
-        Double valorSaqueComJuros = valor * 1.01;
+        Double valorSaqueComJuros = valor * TAXA_SAQUE;
 
         verificaSaldo(valorSaqueComJuros);
 
@@ -44,7 +44,7 @@ public class ContaPoupanca extends Conta {
     @Override
     public void transferencia(Double valor, Conta contaDestino) throws SaldoInsuficienteException, ValorNegativoException {
         verificaValorNegativo(valor);
-        Double valorTransferenciaComJuros = valor * 1.01;
+        Double valorTransferenciaComJuros = valor * TAXA_TRANSFERENCIA;
 
         verificaSaldo(valorTransferenciaComJuros);
         setSaldo(getSaldo() - valorTransferenciaComJuros);

@@ -94,7 +94,7 @@ class ContaCorrenteTest {
     void deveRetornarUmExtratoPorPeriodo() throws SaldoInsuficienteException, ValorNegativoException {
         conta.deposito(300d);
 
-        List<Transacao> transacoes = conta.extratoPorPeriodo(LocalDate.of(2023, 9, 23), null);
+        List<Transacao> transacoes = conta.extratoPorPeriodo(LocalDate.now().minusDays(3L), LocalDate.now().plusDays(3L));
 
         assertFalse(transacoes.isEmpty());
         assertEquals(TipoTransacao.DEPOSITO, transacoes.get(0).getTipoTransacao());

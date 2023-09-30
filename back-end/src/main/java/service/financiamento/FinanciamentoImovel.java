@@ -19,7 +19,7 @@ public class FinanciamentoImovel implements Financiamento {
     @Override
     public void validaScore(Integer score) throws ScoreMinimoException {
         if (score < 70) {
-            throw new ScoreMinimoException("Score minimo para financiamento inválido!");
+            throw new ScoreMinimoException();
         }
     }
 }

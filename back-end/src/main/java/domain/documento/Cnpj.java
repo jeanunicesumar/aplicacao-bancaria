@@ -16,7 +16,7 @@ public class Cnpj implements Documento {
         String somenteNumeroCnpj = numero.replaceAll("\\D", "");
 
         if (somenteNumeroCnpj.length() != 14) {
-            throw new CnpjInvalidoException("Número de cnpj inválido!");
+            throw new CnpjInvalidoException();
         }
 
         return somenteNumeroCnpj.substring(0, 2) + "." +

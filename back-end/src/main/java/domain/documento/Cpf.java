@@ -16,7 +16,7 @@ public class Cpf implements Documento {
         String somenteNumeroCpf = numero.replaceAll("\\D", "");
 
         if (somenteNumeroCpf.length() != 11) {
-            throw new CpfInvalidoException("Número de cpf inválido!");
+            throw new CpfInvalidoException();
         }
 
         return somenteNumeroCpf.substring(0, 3) + "." +

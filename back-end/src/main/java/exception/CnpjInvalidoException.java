@@ -2,8 +2,10 @@ package exception;
 
 public class CnpjInvalidoException extends DocumentoInvalidoException {
 
-    public CnpjInvalidoException(String message) {
-        super(message);
+    private final static String MESSAGE_EXCEPTION_CNPJ = "Número de cnpj inválido!";
+
+    public CnpjInvalidoException() {
+        super(MESSAGE_EXCEPTION_CNPJ);
     }
 
 }

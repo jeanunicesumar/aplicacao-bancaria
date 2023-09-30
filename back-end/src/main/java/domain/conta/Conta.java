@@ -16,6 +16,8 @@ import java.util.stream.Collectors;
 
 public abstract class Conta {
 
+    private static final Double TAXA_TRANSFERENCIA = 1.03;
+
     private Long numero;
     private Double saldo;
     private Integer score = 0;
@@ -60,20 +62,6 @@ public abstract class Conta {
     }
 
     public List<Transacao> extratoPorPeriodo(LocalDate dataInicial, LocalDate dataFinal) {
-        if (dataInicial == null) {
-            return transacoes
-                    .stream()
-                    .filter(transacao -> !transacao.getData().isAfter(dataFinal))
-                    .collect(Collectors.toList());
-        }
-
-        if (dataFinal == null) {
-            return transacoes
-                    .stream()
-                    .filter(transacao -> !transacao.getData().isBefore(dataInicial))
-                    .collect(Collectors.toList());
-        }
-
         return transacoes
                 .stream()
                 .filter(transacao -> !transacao.getData().isBefore(dataInicial) && !transacao.getData().isAfter(dataFinal))
@@ -82,13 +70,13 @@ public abstract class Conta {
 
     protected void verificaValorNegativo(Double valor) throws ValorNegativoException {
         if (valor < 0) {
-            throw new ValorNegativoException("Não é possível realizar transação com valor negativo!");
+            throw new ValorNegativoException();
         }
     }
 
     protected void verificaSaldo(Double valor) throws SaldoInsuficienteException {
         if (valor > getSaldo()) {
-            throw new SaldoInsuficienteException("Saldo insuficiente para transação!");
+            throw new SaldoInsuficienteException();
         }
     }
 
@@ -102,8 +90,6 @@ public abstract class Conta {
 
     protected abstract Double saque(Double valor) throws SaldoInsuficienteException, ValorNegativoException;
 
-    protected abstract void transferencia(Double valor, Conta contaDestino) throws SaldoInsuficienteException, ValorNegativoException;
-
     public Double getSaldo() {
         return saldo;
     }
@@ -111,4 +97,18 @@ public abstract class Conta {
     public Pessoa getTitular() {
         return titular;
     }
+
+    public void transferencia(Double valor, Conta contaDestino) throws SaldoInsuficienteException, ValorNegativoException {
+        verificaValorNegativo(valor);
+        Double valorTransferenciaComJuros = valor * TAXA_TRANSFERENCIA;
+
+        verificaSaldo(valorTransferenciaComJuros);
+
+        setSaldo(getSaldo() - valorTransferenciaComJuros);
+        adicionaTransacao(new Transacao(LocalDate.now(), TipoTransacao.TRANSFERENCIA, valorTransferenciaComJuros, 0d));
+        contaDestino.adicionaTransacao(new Transacao(LocalDate.now(), TipoTransacao.TRANSFERENCIA, 0d, valor));
+        contaDestino.deposito(valor);
+        aumentaScore(10);
+    }
+
 }

@@ -2,7 +2,9 @@ package exception;
 
 public class ScoreMinimoException extends Exception {
 
-    public ScoreMinimoException(String message) {
-        super(message);
+    private final static String MESSAGE_EXCEPTION_SCORE_MINIMO = "Score minimo para financiamento inválido!";
+
+    public ScoreMinimoException() {
+        super(MESSAGE_EXCEPTION_SCORE_MINIMO);
     }
 }
